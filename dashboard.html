@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Republic Dashboard</title>
+    <style>
+        * { 
+            box-sizing: border-box; 
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            min-height: 100vh;
+            padding-top: 60px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            padding: 0 20px;
+            background-color: #1a73e8;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        
+        .left-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            background-color: #fff;
+            padding: 5px 12px;
+            border-radius: 6px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 35px;
+            width: auto;
+        }
+        
+        .menu-icon {
+            color: #fff;
+            cursor: pointer;
+            font-size: 26px;
+            padding: 5px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .menu-icon:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 20px;
+            transition: background-color 0.2s;
+        }
+        
+        .user-profile:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .user-profile img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            object-fit: cover;
+        }
+
+        /* Navigation Dropdown */
+        .main-nav-dropdown {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 900;
+            max-height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+        
+        .main-nav-dropdown.active {
+            display: block;
+        }
+        
+        .main-nav-dropdown ul {
+            list-style: none;
+            padding: 10px 0;
+        }
+        
+        .main-nav-dropdown ul li a {
+            display: block;
+            padding: 14px 25px;
+            text-decoration: none;
+            color: #333;
+            font-size: 15px;
+            transition: background-color 0.2s;
+        }
+        
+        .main-nav-dropdown ul li a:hover {
+            background-color: #f0f3f7;
+        }
+
+        .dropdown > a { 
+            position: relative;
+            font-weight: 500;
+        }
+        
+        .dropdown > a::after { 
+            content: '▼'; 
+            font-size: 10px; 
+            position: absolute; 
+            right: 25px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            transition: transform 0.3s; 
+        }
+        
+        .dropdown.open > a::after { 
+            transform: translateY(-50%) rotate(180deg); 
+        }
+        
+        .dropdown-menu { 
+            display: none; 
+            list-style: none; 
+            background-color: #f8f9fb;
+        }
+        
+        .dropdown.open > .dropdown-menu { 
+            display: block; 
+        }
+        
+        .dropdown-menu li a { 
+            padding-left: 45px;
+            font-size: 14px;
+        }
+        
+        .dropdown-menu .dropdown > a {
+            padding-left: 45px;
+        }
+        
+        .dropdown-menu .dropdown .dropdown-menu li a {
+            padding-left: 65px;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 25px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .content-section { 
+            display: none;
+        }
+        
+        .content-section.active { 
+            display: block; 
+        }
+        
+        .content-section h1 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .content-section > p {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        /* Profile Section */
+        .profile-form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        
+        .profile-form h2 {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 25px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .profile-image-container {
+            margin-bottom: 25px;
+        }
+        
+        .profile-image-wrapper {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 10px;
+        }
+        
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid #e0e6ed;
+            object-fit: cover;
+        }
+        
+        .upload-icon {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            cursor: pointer;
+            background-color: #1a73e8;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: background-color 0.2s;
+        }
+        
+        .upload-icon:hover {
+            background-color: #1557b0;
+        }
+        
+        .upload-icon::before {
+            content: '📷';
+            font-size: 16px;
+        }
+        
+        .profile-form small {
+            display: block;
+            color: #e74c3c;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+        
+        .form-group input[type="text"]:focus {
+            outline: none;
+            border-color: #1a73e8;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 25px;
+            margin-top: 8px;
+        }
+        
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 400;
+            cursor: pointer;
+        }
+        
+        .radio-group input[type="radio"] {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .btn-primary {
+            padding: 12px 30px;
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1557b0;
+        }
+
+        /* Dashboard Cards */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .dashboard-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .dashboard-card.students {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .dashboard-card.teachers {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .dashboard-card.parents {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        
+        .dashboard-card.classes {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+        
+        .dashboard-card h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .dashboard-card p {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        /* Calendar */
+        .calendar-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .calendar-header button {
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        
+        .calendar-header button:hover {
+            background-color: #1557b0;
+        }
+        
+        .calendar-header h2 {
+            font-size: 22px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+        
+        .calendar-grid .day-name {
+            font-weight: 600;
+            padding: 12px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .calendar-grid .date {
+            padding: 12px;
+            border-radius: 8px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            min-height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .calendar-grid .date:hover {
+            background-color: #f0f3f7;
+        }
+        
+        .calendar-grid .date.today {
+            background-color: #1a73e8;
+            color: #fff;
+            font-weight: 600;
+        }
+        
+        .event-marker {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+        
+        .event-marker.event {
+            background-color: #3498db;
+        }
+        
+        .event-marker.exam {
+            background-color: #e74c3c;
+        }
+        
+        .event-marker.holiday {
+            background-color: #27ae60;
+        }
+        
+        .calendar-legend {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e6ed;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .legend-marker {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .legend-marker.event {
+            background-color: #3498db;
+        }
+        
+        .legend-marker.exam {
+            background-color: #e74c3c;
+        }
+        
+        .legend-marker.holiday {
+            background-color: #27ae60;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            background-color: #fff;
+            border-radius: 12px;
+            border-spacing: 0;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        
+        th, td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #e0e6ed;
+            vertical-align: middle;
+        }
+        
+        thead tr {
+            background-color: #f8f9fb;
+        }
+        
+        th {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        tbody tr:hover {
+            background-color: #f8f9fb;
+        }
+
+
+
+@media (max-width: 768px) {
+  .th,
+  .td {
+    font-size: 14px;
+    padding: 12px;
+  }
+}
+
+
+
+        /* Content Cards */
+        .content-card {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        
+        .content-card h3 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .content-card p {
+            margin-bottom: 12px;
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .content-card ul {
+            padding-left: 20px;
+        }
+        
+        .content-card ul li {
+            margin-bottom: 10px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* Search Input */
+        .search-input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #1a73e8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px 15px;
+            }
+            
+            .content-section h1 {
+                font-size: 24px;
+            }
+            
+            .profile-form {
+                padding: 20px;
+            }
+            
+            .calendar-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="left-section">
+            <div class="logo">
+                <img src="https://i.ibb.co/8DVzCWY9/cropedlogo.jpg" alt="INSEAD Logo">
+            </div>
+            <span class="menu-icon" id="menu-toggle">☰</span>
+        </div>
+        <div class="user-profile" id="profile-link">
+            <img src="https://i.ibb.co/4wFB0Pn8/clientpic.jpg" alt="User" id="headerProfileImg">
+        </div>
+    </header>
+
+    <nav class="main-nav-dropdown" id="main-nav-dropdown">
+        <ul>
+    <li>
+  <a href="index.html" class="nav-link" data-page="home">Home</a>
+</li>
+            <li>
+  <a href="#" class="nav-link" data-page="profile">Profile</a>
+</li>
+
+            <li><a href="#" class="nav-link" data-page="dashboard">Dashboard</a></li>
+            <li class="dropdown" id="enrolled-classes-dropdown">
+                <a href="#" class="nav-link" data-page="enrolled-classes-placeholder">Enrolled Classes</a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown open" id="mba-advance-dropdown">
+                        <a href="#">MBA</a>
+                        <ul class="dropdown-menu">
+                            
+                            <li><a href="#" class="nav-link" data-page="subjects">Subjects</a></li>
+                            <li><a href="#" class="nav-link" data-page="timetable">Time Table</a></li>
+                            <li><a href="#" class="nav-link" data-page="teacher">Teacher</a></li>
+                            <li><a href="#" class="nav-link" data-page="attendance">Attendance</a></li>
+                            <li><a href="#" class="nav-link" data-page="session">Session</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#" class="nav-link" data-page="parents">Parents</a></li>
+            <li><a href="#" class="nav-link" data-page="events">Events</a></li>
+            <li><a href="#" class="nav-link" data-page="transport">Transport</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <section class="content-section" id="home">
+  <h1>Home</h1>
+  <p>Welcome to INSEAD Student Portal</p>
+
+  <div class="content-card">
+    <p>This is the home page.</p>
+    <p>Use the menu to navigate Dashboard, Classes, Events etc.</p>
+  </div>
+</section>
+
+<section class="content-section" id="profile">
+  <h1>My Profile</h1>
+  <p>Dashboard > Profile</p>
+
+  <div class="profile-form">
+    <h2>PERSONAL DETAILS</h2>
+
+    <div class="profile-image-container">
+      <div class="profile-image-wrapper">
+        <img src="https://i.ibb.co/4wFB0Pn8/clientpic.jpg"
+             class="profile-image"
+             id="profilePreview">
+        <span class="upload-icon" id="profileUploadBtn"></span>
+        <input type="file" id="profileImageInput" accept="image/*" hidden>
+      </div>
+      <small>* JPG / PNG • Max 3MB</small>
+    </div>
+
+    <div class="form-group">
+      <label>First Name</label>
+      <input type="text" id="firstName" value="Rupender">
+    </div>
+
+    <div class="form-group">
+      <label>Last Name</label>
+      <input type="text" id="lastName" value="Singh">
+    </div>
+
+    <div class="form-group">
+      <label>Email</label>
+      <input type="text" id="email" value="rupender@gmail.com">
+    </div>
+
+    <button class="btn-primary" id="saveProfile">Update Profile</button>
+  </div>
+</section>
+
+
+        <section class="content-section" id="dashboard">
+            <h1>Dashboard</h1>
+            <p>Home > Dashboard</p>
+            <div class="card-container">
+                <div class="dashboard-card students">
+                    <h3>Students</h3>
+                    <p>19+</p>
+                </div>
+                <div class="dashboard-card teachers">
+                    <h3>Teachers</h3>
+                    <p>1+</p>
+                </div>
+                <div class="dashboard-card parents">
+                    <h3>Parents</h3>
+                    <p>0+</p>
+                </div>
+                <div class="dashboard-card classes">
+                    <h3>Classes</h3>
+                    <p>1+</p>
+                </div>
+            </div>
+            <h2 style="margin-top: 40px; margin-bottom: 20px; color: #2c3e50;">ACTIVITIES CALENDAR</h2>
+
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <button id="prev-month">&lt;</button>
+                    <h2 id="current-month-year"></h2>
+                    <button id="next-month">&gt;</button>
+                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
+                <div class="calendar-legend">
+                    <div class="legend-item"><span class="legend-marker event"></span> Events</div>
+                    <div class="legend-item"><span class="legend-marker exam"></span> Exams</div>
+                    <div class="legend-item"><span class="legend-marker holiday"></span> Holidays</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" id="session">
+            <h1>Session Details</h1>
+            <p>Dashboard > Enrolled Classes > MBA Advance > Session</p>
+            <div class="content-card">
+                <h3>MBA Advance Session</h3>
+                <p><strong>Start Date:</strong> 03-09-2025</p>
+                <p><strong>End Date:</strong> 09-09-2026</p>
+            </div>
+        </section>
+
+        <section class="content-section" id="subjects">
+            <h1>Subjects</h1>
+            <p>Dashboard > Enrolled Classes > MBA Advance > Subjects</p>
+            <div class="content-card">
+                <h3>List of Subjects</h3>
+                <ul>
+                    <li>Marketing Management</li>
+                    <li>Financial Accounting</li>
+                    <li>Organizational Behavior</li>
+                    <li>Strategic Management</li>
+                    <li>Operations Management</li>
+                    <li>Human Resource Management</li>
+                    <li>Business Law</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="content-section" id="timetable">
+            <h1>TIME TABLE - MBA</h1>
+            <p>Dashboard > Enrolled Classes > MBA Advance > Time Table</p>
+            <input type="text" placeholder="Search..." class="search-input">
+            <table>
+                <thead>
+    <tr>
+      <th class="week-col">Week</th>
+      <th class="time-col">9:00 – 15:00</th>
+      <th class="time-col">9:00 – 15:00</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>Monday</td>
+      <td>Events Management</td>
+      <td>-</td>
+    </tr>
+
+    <tr>
+      <td>Wednesday</td>
+      <td>Services Marketing and Customer Service</td>
+      <td>-</td>
+    </tr>
+
+    <tr>
+      <td>Friday</td>
+      <td>Services Marketing and Customer Service</td>
+      <td>Events Management</td>
+    </tr>
+  </tbody>
+            </table>
+        </section>
+
+        <section class="content-section" id="teacher">
+            <h1>Teacher</h1>
+            <p>Dashboard > Enrolled Classes > MBA Advance > Teacher</p>
+            <div class="content-card">
+                <p>Joshua Vigneswaran</p>
+            </div>
+        </section>
+
+        <section class="content-section" id="attendance">
+            <h1>Attendance</h1>
+            <p>Dashboard > Enrolled Classes > MBA Advance > Attendance</p>
+            <div class="content-card">
+                <p>Attendance records will be displayed here.</p>
+            </div>
+        </section>
+
+        <section class="content-section" id="parents">
+            <h1>Parents</h1>
+            <p>Dashboard > Parents</p>
+            <div class="content-card">
+                <p>Parent information will be displayed here.</p>
+            </div>
+        </section>
+
+        <section class="content-section" id="events">
+            <h1>Events</h1>
+            <p>Dashboard > Events</p>
+            <div class="content-card">
+                <p>Upcoming events will be displayed here.</p>
+            </div>
+        </section>
+
+        <section class="content-section" id="transport">
+            <h1>Transport</h1>
+            <p>Dashboard > Transport</p>
+            <div class="content-card">
+                <p>Transport information will be displayed here.</p>
+            </div>
+        </section>
+    </main>
+
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* ================= BASIC SELECTORS ================= */
+  const menuToggle = document.getElementById("menu-toggle");
+  const navDropdown = document.getElementById("main-nav-dropdown");
+  const navLinks = document.querySelectorAll(".nav-link");
+  const sections = document.querySelectorAll(".content-section");
+  const dropdownParents = document.querySelectorAll(".dropdown > a");
+
+  /* ================= MENU OPEN / CLOSE ================= */
+  menuToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    navDropdown.classList.toggle("active");
+  });
+
+  // click outside → close menu
+  document.addEventListener("click", (e) => {
+    if (!navDropdown.contains(e.target) && e.target !== menuToggle) {
+      navDropdown.classList.remove("active");
+    }
+  });
+
+  /* ================= DROPDOWN (ENROLLED / MBA) ================= */
+  dropdownParents.forEach(link => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const parentLi = link.parentElement;
+      parentLi.classList.toggle("open");
+    });
+  });
+
+  /* ================= PAGE SWITCH ================= */
+  function showPage(pageId) {
+    sections.forEach(sec => sec.classList.remove("active"));
+
+    const target = document.getElementById(pageId);
+    if (target) {
+      target.classList.add("active");
+      window.scrollTo(0, 0);
+
+      // 🔥 dashboard open → calendar render
+      if (pageId === "dashboard") {
+        setTimeout(renderCalendar, 0);
+      }
+    }
+  }
+
+navLinks.forEach(link => {
+  link.addEventListener("click", (e) => {
+
+    const href = link.getAttribute("href");
+    const page = link.getAttribute("data-page");
+
+    // ✅ Agar HOME (index.html) hai → browser ko jaane do
+    if (href && href.includes("index.html")) {
+      return; // ❗ preventDefault nahi lagega
+    }
+
+    // ❌ Baaki sab ke liye default roko
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!page || page === "enrolled-classes-placeholder") return;
+
+    showPage(page);
+    navDropdown.classList.remove("active");
+  });
+});
+
+
+
+
+
+
+
+/* ================= HEADER PROFILE CLICK ================= */
+
+const headerProfile = document.getElementById("profile-link");
+
+headerProfile.addEventListener("click", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  // sab sections hide
+  sections.forEach(sec => sec.classList.remove("active"));
+
+  // profile section show
+  const profileSection = document.getElementById("profile");
+  if (profileSection) {
+    profileSection.classList.add("active");
+    window.scrollTo(0, 0);
+  }
+
+  // menu band karo agar open ho
+  navDropdown.classList.remove("active");
+});
+
+
+
+
+
+
+  /* ================= DEFAULT PAGE ================= */
+  showPage("dashboard");
+
+  /* ================= CALENDAR ================= */
+  const calendarGrid = document.getElementById("calendarGrid");
+  const currentMonthYear = document.getElementById("current-month-year");
+  const prevMonthBtn = document.getElementById("prev-month");
+  const nextMonthBtn = document.getElementById("next-month");
+
+  let currentDate = new Date();
+
+  function renderCalendar() {
+    if (!calendarGrid) return;
+
+    calendarGrid.innerHTML = "";
+
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+
+    currentMonthYear.innerText =
+      currentDate.toLocaleString("default", { month: "long" }) + " " + year;
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const lastDate = new Date(year, month + 1, 0).getDate();
+    const today = new Date();
+
+    // Day names
+    ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].forEach(day => {
+      const d = document.createElement("div");
+      d.className = "day-name";
+      d.innerText = day;
+      calendarGrid.appendChild(d);
+    });
+
+    // Empty slots
+    for (let i = 0; i < firstDay; i++) {
+      calendarGrid.appendChild(document.createElement("div"));
+    }
+
+    // Dates
+    for (let d = 1; d <= lastDate; d++) {
+      const dateDiv = document.createElement("div");
+      dateDiv.className = "date";
+      dateDiv.innerText = d;
+
+      if (
+        d === today.getDate() &&
+        month === today.getMonth() &&
+        year === today.getFullYear()
+      ) {
+        dateDiv.classList.add("today");
+      }
+
+      calendarGrid.appendChild(dateDiv);
+    }
+  }
+
+  prevMonthBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    renderCalendar();
+  });
+
+  nextMonthBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    renderCalendar();
+  });
+
+
+const headerProfileImg = document.getElementById("headerProfileImg");
+
+
+
+/* ============ PROFILE FUNCTIONALITY ============ */
+
+const profileUploadBtn = document.getElementById("profileUploadBtn");
+const profileImageInput = document.getElementById("profileImageInput");
+const profilePreview = document.getElementById("profilePreview");
+
+const firstName = document.getElementById("firstName");
+const lastName = document.getElementById("lastName");
+const email = document.getElementById("email");
+const saveProfile = document.getElementById("saveProfile");
+
+/* Load saved data */
+window.addEventListener("load", () => {
+  if (localStorage.getItem("profileData")) {
+    const data = JSON.parse(localStorage.getItem("profileData"));
+
+    firstName.value = data.firstName;
+    lastName.value = data.lastName;
+    email.value = data.email;
+
+    profilePreview.src = data.image;
+    headerProfileImg.src = data.image; // 🔥 ADD THIS
+  }
+});
+
+
+/* Image upload */
+profileUploadBtn.addEventListener("click", () => {
+  profileImageInput.click();
+});
+
+profileImageInput.addEventListener("change", () => {
+  const file = profileImageInput.files[0];
+  if (!file) return;
+
+  if (file.size > 3 * 1024 * 1024) {
+    alert("Image must be less than 3MB");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    // profile page image
+    profilePreview.src = reader.result;
+
+    // 🔥 header image ALSO update
+    headerProfileImg.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+
+/* Save profile */
+saveProfile.addEventListener("click", () => {
+  const profileData = {
+    firstName: firstName.value,
+    lastName: lastName.value,
+    email: email.value,
+    image: profilePreview.src
+  };
+
+  localStorage.setItem("profileData", JSON.stringify(profileData));
+  alert("Profile Updated Successfully ✅");
+});
+
+
+
+
+
+
+});
+
+</script>
