@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Pass Layout - Final Polish</title>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+128&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            padding: 50px;
+        }
+
+        .container {
+            background-color: white;
+            display: inline-flex;
+            padding: 20px;
+            gap: 20px;
+            border-radius: 8px;
+            width: 900px;
+            display: flex;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 40px;
+        }
+
+     /* --- CARD WITH EXACT GRADIENT & PATTERN --- */
+        .card-container {
+            width: 310px; 
+            /* Same color as side of the photo */
+            background: radial-gradient(circle at 100% 100%, rgba(255,255,255,0.2) 0%, transparent 40%),
+                        linear-gradient(135deg, #bbf5dd 0%, rgb(197, 230, 219) 100%);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid #61a891;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        /* Background Pattern (Subtle circular lines) */
+        .card-container::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(circle at 20% 50%, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+        }
+
+/* --- EXACT BARCODE BOX FIX --- */
+        .barcode-section {
+            background-color: white;
+            padding: 0; 
+            margin: 0;
+            /* text-align: center; */
+            /* Height ko original ke hisaab se set kiya */
+            height: 60px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .real-barcode {
+            font-family: 'Libre Barcode 128', cursive;
+            /* Font size ko fix kiya taaki box bda na lage */
+            font-size: 80px; 
+            line-height: 0.8;
+            color: #000;
+            letter-spacing: -2px;
+            display: block;
+            width: 100%;
+            margin-top: 30px;
+            text-align: center;
+            transform: scaleX(1.1); /* Thoda sa upar se gap */
+        }
+
+        .republic-header {
+            background-color: #b9ded3; 
+            padding: 8px 15px;
+            color: #325848;
+            font-weight: bold;
+            font-size: 13px;
+            letter-spacing: 0.3px;
+        }
+
+        /* 2. Patli White Strip */
+        .white-strip {
+            background-color: #f1f9f7; 
+            padding: 2px 15px; /* Padding kam karke strip patli ki hai */
+            border-top: 0.5px solid #99bcb1;
+            border-bottom: 0.5px solid #99bcb1;
+        }
+
+        .student-label {
+            font-size: 10px; /* Font thoda chota */
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Logo Overlap Adjustment */
+        .coat-of-arms {
+            position: absolute;
+            right: 1px;
+            top: 70px; /* Adjust kiya gaya hai strip ke hisaab se */
+            width: 65px;
+            z-index: 10;
+        }
+
+        .card-body {
+            padding: 15px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .photo-box {
+            width: 95px;
+            height: 120px;
+            /* border: 1px solid #aaa; */
+            background-color: #fff;
+            flex-shrink: 0;
+            z-index: 5;
+        }
+
+        .details {
+            font-size: 11px;
+            line-height: 1.2;
+        }
+
+        .label { color: #777; text-transform: uppercase; font-size: 8.5px; margin-top: 4px; }
+        .value { font-weight: bold; color: #222; font-size: 11px; }
+
+        .dates-address-section {
+            padding: 0 15px 10px 107px; 
+            font-size: 10.5px;
+            margin-top: -10px;
+            margin-left: 17px;
+        }
+
+        .bottom-white-section {
+            background-color: white;
+            padding: 8px 15px;
+            border-top: 1px solid #ddd;
+        }
+
+        .pass-issued-title { font-size: 12px; font-weight: bold; margin-bottom: 3px; }
+
+        .footer-logo-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ica-info { font-size: 10px; line-height: 1.1; color: #333; }
+
+        /* --- RIGHT SIDE: SLIM VERIFICATION --- */
+        .verification-side {
+            width: 280px; /* Isko bhi patla kiya hai */
+            border-left: 1px solid #eee;
+            padding-left: 30px;
+        }
+
+        .verification-side h2 {
+            color: #333;
+            font-size: 16px;
+            margin-top: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .verification-side p {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .verification-side h3 {
+            font-size: 14px;
+            margin: 20px 0 10px 0;
+        }
+
+        .step {
+            margin-bottom: 15px;
+            font-size: 12px;
+            color: #444;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            background: #f0f0f0;
+            padding: 1px 6px;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+
+        .qr-box {
+            width: 130px; /* QR box chota kiya slim look ke liye */
+            height: 130px;
+            border: 1px solid #eee;
+            margin: 10px 0;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card-container">
+        <div class="barcode-section">
+            <div class="real-barcode">M0285650J</div>
+        </div>
+
+        <div class="republic-header">REPUBLIC OF SINGAPORE</div>
+        
+        <div class="white-strip">
+            <div class="student-label">STUDENT'S PASS</div>
+        </div>
+        
+        <img src="sg.png" class="coat-of-arms" alt="Singapore Crest">
+
+        <div class="card-body">
+            <div class="photo-box">
+                <img src="anuj.jpeg" style="width:100%; height:100%; object-fit: cover;" alt="Photo">
+            </div>
+            <div class="details">
+                <div class="label">Name</div>
+                <div class="value">ANUJ</div>
+                
+                <div class="label">FIN</div>
+                <div class="value">M0285650J</div>
+                
+                <div class="label">Date of Birth</div>
+                <div class="value">22 MAR 1998</div>
+                
+                <div class="label">Sex</div>
+                <div class="value">MALE</div>
+                
+                <div class="label">Nationality / Citizenship</div>
+                <div class="value">INDIAN</div>
+            </div>
+        </div>
+
+        <div class="dates-address-section">
+            <div class="label">Pass Issue Date</div>
+            <div class="value">5 SEP 2025</div>
+            
+            <div class="label">Pass Expiry Date</div>
+            <div class="value">9 SEP 2026</div>
+            
+            <div class="label">Address</div>
+            <div class="value">6 TAMPINES STREET 92<br>SINGAPORE 528893</div>
+            
+            <div style="font-size: 8.5px; font-weight: bold; color: #333; margin-top: 15px;">MULTIPLE JOURNEY VISA ISSUED</div>
+        </div>
+
+        <div class="bottom-white-section">
+            <div class="pass-issued-title">Pass Issued by</div>
+            <div class="footer-logo-row">
+                <div class="ica-info">
+                    Immigration &<br>Checkpoints Authority
+                </div>
+                <img src="ica.png" style="width: 80px;" alt="ICA Logo">
+            </div>
+        </div>
+    </div>
+
+    <div class="verification-side">
+        <h2>FOR VERIFICATION USE</h2>
+        <p style="font-size: 14px; color: #666;">Present this for verification purposes when requested by relevant authorities and third parties.</p>
+        
+        <h3>How to Verify</h3>
+        <div style="margin-bottom: 12px;">1. Go to <strong>www.file.gov.sg/verify</strong></div>
+        <div style="margin-bottom: 12px;">
+            2. Use the Scan QR code function to scan:
+            <div style="width: 150px; height: 150px; border: 1px solid #ddd; margin: 15px 0;">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=VerifyAnuj" style="width:100%;">
+            </div>
+        </div>
+        <div>3. View real-time verification results</div>
+    </div>
+</div>
+
+</body>
+</html>

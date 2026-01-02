@@ -621,7 +621,7 @@
     <header class="header">
         <div class="left-section">
             <div class="logo">
-                <img src="https://i.ibb.co/8DVzCWY9/cropedlogo.jpg" alt="INSEAD Logo">
+                <img src="rp-logo.png" alt="rp logo">
             </div>
             <span class="menu-icon" id="menu-toggle">☰</span>
         </div>
@@ -656,6 +656,9 @@
                     </li>
                 </ul>
             </li>
+                <li>
+  <a href="studentpass.html">StudentPass</a>
+</li>
             <li><a href="#" class="nav-link" data-page="parents">Parents</a></li>
             <li><a href="#" class="nav-link" data-page="events">Events</a></li>
             <li><a href="#" class="nav-link" data-page="transport">Transport</a></li>
@@ -665,7 +668,7 @@
     <main class="main-content">
         <section class="content-section" id="home">
   <h1>Home</h1>
-  <p>Welcome to INSEAD Student Portal</p>
+  <p>Welcome to Republic Polytechnic Student Portal</p>
 
   <div class="content-card">
     <p>This is the home page.</p>
@@ -852,255 +855,7 @@
         </section>
     </main>
 
-  <script>
-document.addEventListener("DOMContentLoaded", () => {
+<script type="module" src="dashboard.js"></script>
 
-  /* ================= BASIC SELECTORS ================= */
-  const menuToggle = document.getElementById("menu-toggle");
-  const navDropdown = document.getElementById("main-nav-dropdown");
-  const navLinks = document.querySelectorAll(".nav-link");
-  const sections = document.querySelectorAll(".content-section");
-  const dropdownParents = document.querySelectorAll(".dropdown > a");
-
-  /* ================= MENU OPEN / CLOSE ================= */
-  menuToggle.addEventListener("click", (e) => {
-    e.stopPropagation();
-    navDropdown.classList.toggle("active");
-  });
-
-  // click outside → close menu
-  document.addEventListener("click", (e) => {
-    if (!navDropdown.contains(e.target) && e.target !== menuToggle) {
-      navDropdown.classList.remove("active");
-    }
-  });
-
-  /* ================= DROPDOWN (ENROLLED / MBA) ================= */
-  dropdownParents.forEach(link => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      const parentLi = link.parentElement;
-      parentLi.classList.toggle("open");
-    });
-  });
-
-  /* ================= PAGE SWITCH ================= */
-  function showPage(pageId) {
-    sections.forEach(sec => sec.classList.remove("active"));
-
-    const target = document.getElementById(pageId);
-    if (target) {
-      target.classList.add("active");
-      window.scrollTo(0, 0);
-
-      // 🔥 dashboard open → calendar render
-      if (pageId === "dashboard") {
-        setTimeout(renderCalendar, 0);
-      }
-    }
-  }
-
-navLinks.forEach(link => {
-  link.addEventListener("click", (e) => {
-
-    const href = link.getAttribute("href");
-    const page = link.getAttribute("data-page");
-
-    // ✅ Agar HOME (index.html) hai → browser ko jaane do
-    if (href && href.includes("index.html")) {
-      return; // ❗ preventDefault nahi lagega
-    }
-
-    // ❌ Baaki sab ke liye default roko
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (!page || page === "enrolled-classes-placeholder") return;
-
-    showPage(page);
-    navDropdown.classList.remove("active");
-  });
-});
-
-
-
-
-
-
-
-/* ================= HEADER PROFILE CLICK ================= */
-
-const headerProfile = document.getElementById("profile-link");
-
-headerProfile.addEventListener("click", (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-
-  // sab sections hide
-  sections.forEach(sec => sec.classList.remove("active"));
-
-  // profile section show
-  const profileSection = document.getElementById("profile");
-  if (profileSection) {
-    profileSection.classList.add("active");
-    window.scrollTo(0, 0);
-  }
-
-  // menu band karo agar open ho
-  navDropdown.classList.remove("active");
-});
-
-
-
-
-
-
-  /* ================= DEFAULT PAGE ================= */
-  showPage("dashboard");
-
-  /* ================= CALENDAR ================= */
-  const calendarGrid = document.getElementById("calendarGrid");
-  const currentMonthYear = document.getElementById("current-month-year");
-  const prevMonthBtn = document.getElementById("prev-month");
-  const nextMonthBtn = document.getElementById("next-month");
-
-  let currentDate = new Date();
-
-  function renderCalendar() {
-    if (!calendarGrid) return;
-
-    calendarGrid.innerHTML = "";
-
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-
-    currentMonthYear.innerText =
-      currentDate.toLocaleString("default", { month: "long" }) + " " + year;
-
-    const firstDay = new Date(year, month, 1).getDay();
-    const lastDate = new Date(year, month + 1, 0).getDate();
-    const today = new Date();
-
-    // Day names
-    ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].forEach(day => {
-      const d = document.createElement("div");
-      d.className = "day-name";
-      d.innerText = day;
-      calendarGrid.appendChild(d);
-    });
-
-    // Empty slots
-    for (let i = 0; i < firstDay; i++) {
-      calendarGrid.appendChild(document.createElement("div"));
-    }
-
-    // Dates
-    for (let d = 1; d <= lastDate; d++) {
-      const dateDiv = document.createElement("div");
-      dateDiv.className = "date";
-      dateDiv.innerText = d;
-
-      if (
-        d === today.getDate() &&
-        month === today.getMonth() &&
-        year === today.getFullYear()
-      ) {
-        dateDiv.classList.add("today");
-      }
-
-      calendarGrid.appendChild(dateDiv);
-    }
-  }
-
-  prevMonthBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    renderCalendar();
-  });
-
-  nextMonthBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    renderCalendar();
-  });
-
-
-const headerProfileImg = document.getElementById("headerProfileImg");
-
-
-
-/* ============ PROFILE FUNCTIONALITY ============ */
-
-const profileUploadBtn = document.getElementById("profileUploadBtn");
-const profileImageInput = document.getElementById("profileImageInput");
-const profilePreview = document.getElementById("profilePreview");
-
-const firstName = document.getElementById("firstName");
-const lastName = document.getElementById("lastName");
-const email = document.getElementById("email");
-const saveProfile = document.getElementById("saveProfile");
-
-/* Load saved data */
-window.addEventListener("load", () => {
-  if (localStorage.getItem("profileData")) {
-    const data = JSON.parse(localStorage.getItem("profileData"));
-
-    firstName.value = data.firstName;
-    lastName.value = data.lastName;
-    email.value = data.email;
-
-    profilePreview.src = data.image;
-    headerProfileImg.src = data.image; // 🔥 ADD THIS
-  }
-});
-
-
-/* Image upload */
-profileUploadBtn.addEventListener("click", () => {
-  profileImageInput.click();
-});
-
-profileImageInput.addEventListener("change", () => {
-  const file = profileImageInput.files[0];
-  if (!file) return;
-
-  if (file.size > 3 * 1024 * 1024) {
-    alert("Image must be less than 3MB");
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    // profile page image
-    profilePreview.src = reader.result;
-
-    // 🔥 header image ALSO update
-    headerProfileImg.src = reader.result;
-  };
-  reader.readAsDataURL(file);
-});
-
-
-/* Save profile */
-saveProfile.addEventListener("click", () => {
-  const profileData = {
-    firstName: firstName.value,
-    lastName: lastName.value,
-    email: email.value,
-    image: profilePreview.src
-  };
-
-  localStorage.setItem("profileData", JSON.stringify(profileData));
-  alert("Profile Updated Successfully ✅");
-});
-
-
-
-
-
-
-});
-
-</script>
+</body>
+</html>
