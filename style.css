@@ -825,3 +825,66 @@ body{
     margin-top:15px;
   }
 }
+
+
+
+/* ===== MOBILE MENU FIX ===== */
+
+#mobileMenu {
+  display: none;
+}
+
+#mobileMenu.active {
+  display: block;
+}
+
+/* ===== MOBILE MENU FIX ===== */
+
+#mobileMenu {
+  display: none;
+}
+
+#mobileMenu.active {
+  display: block;
+}
+
+/* Mobile layout */
+@media (max-width: 768px) {
+  .rp-nav {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: #fff;
+    z-index: 999;
+  }
+
+  .rp-menu {
+    flex-direction: column;
+  }
+
+  .rp-menu li a {
+    padding: 14px 20px;
+    display: block;
+  }
+}
+
+
+/* ================= DESKTOP MENU FIX ================= */
+
+/* Desktop view */
+@media (min-width: 769px) {
+  .rp-nav {
+    display: flex !important;
+  }
+
+  .rp-menu {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+  }
+
+  .rp-menu-btn {
+    display: none;
+  }
+}

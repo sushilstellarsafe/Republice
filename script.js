@@ -40,11 +40,19 @@ if (signoutBtn) {
 }
 
 /* ===== MOBILE MENU (tumhara existing code safe) ===== */
-const menuBtn = document.getElementById("menuBtn");
-const mobileMenu = document.getElementById("mobileMenu");
-
-if (menuBtn) {
-  menuBtn.addEventListener("click", () => {
+if (menuBtn && mobileMenu) {
+  menuBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     mobileMenu.classList.toggle("active");
   });
+
+  document.addEventListener("click", () => {
+    mobileMenu.classList.remove("active");
+  });
+
+  mobileMenu.addEventListener("click", (e) => {
+    e.stopPropagation(); // menu ke andar click safe
+  });
 }
+

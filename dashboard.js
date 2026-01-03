@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const { data: profile } = await supabase
     .from("profiles")
     .select("*")
-    .eq("id", user.id)
+    .eq("id", user.id)   
     .single();
 
   if (profile) {
@@ -40,19 +40,26 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   /* ================= MENU ================= */
-  const menuToggle = document.getElementById("menu-toggle");
-  const navDropdown = document.getElementById("main-nav-dropdown");
+ /* ========== MENU FIX (DESKTOP + MOBILE) ========== */
 
-  menuToggle.addEventListener("click", (e) => {
+const menuBtn = document.getElementById("menu-toggle");
+const nav = document.getElementById("main-nav-dropdown");
+
+if (menuBtn && nav) {
+  menuBtn.addEventListener("click", (e) => {
+    e.preventDefault();
     e.stopPropagation();
-    navDropdown.classList.toggle("active");
+    nav.classList.toggle("active");
   });
 
-  document.addEventListener("click", (e) => {
-    if (!navDropdown.contains(e.target) && e.target !== menuToggle) {
-      navDropdown.classList.remove("active");
-    }
+  nav.addEventListener("click", (e) => {
+    e.stopPropagation();
   });
+
+  document.addEventListener("click", () => {
+    nav.classList.remove("active");
+  });
+}
 
   /* ================= PAGE SWITCH ================= */
   const sections = document.querySelectorAll(".content-section");
