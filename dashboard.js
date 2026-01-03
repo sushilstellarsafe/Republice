@@ -39,6 +39,39 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+
+  if (profile) {
+
+  // ===== TEXT DATA =====
+  document.getElementById("firstName").value =
+    profile.full_name?.split(" ")[0] || "";
+
+  document.getElementById("lastName").value =
+    profile.full_name?.split(" ")[1] || "";
+
+  document.getElementById("email").value = profile.email || "";
+
+  // ===== IMAGE FIX (IMPORTANT) =====
+  const headerImg = document.getElementById("headerProfileImg");
+  const profileImg = document.getElementById("profilePreview");
+
+  if (profile.photo_url) {
+    headerImg.src = profile.photo_url;
+    profileImg.src = profile.photo_url;
+
+    headerImg.style.display = "block";
+    profileImg.style.display = "block";
+  } else {
+    // fallback avatar (optional but recommended)
+    headerImg.src = "default-avatar.png";
+    profileImg.src = "default-avatar.png";
+
+    headerImg.style.display = "block";
+    profileImg.style.display = "block";
+  }
+}
+
+
   /* ================= MENU ================= */
  /* ========== MENU FIX (DESKTOP + MOBILE) ========== */
 
@@ -60,6 +93,18 @@ if (menuBtn && nav) {
     nav.classList.remove("active");
   });
 }
+
+
+/* ===== PROFILE ICON CLICK ===== */
+const profileLink = document.getElementById("profile-link");
+
+if (profileLink) {
+  profileLink.addEventListener("click", () => {
+    showPage("profile");   // 🔥 profile section open
+    navDropdown.classList.remove("active");
+  });
+}
+
 
   /* ================= PAGE SWITCH ================= */
   const sections = document.querySelectorAll(".content-section");
@@ -182,4 +227,23 @@ enrolledToggle.addEventListener("click", (e) => {
 //     parentLi.classList.toggle("open");
 //   });
 // });
+
+
+// 🔹 AUTO CLOSE MENU ON CLICK
+const menuToggle = document.getElementById("menu-toggle");
+const mainMenu = document.getElementById("main-nav-dropdown");
+
+// sabhi menu links pakdo
+document.querySelectorAll(".nav-link").forEach(link => {
+  link.addEventListener("click", () => {
+    mainMenu.classList.remove("active");
+  });
+});
+
+// enrolled classes ke andar jo <a> hai unke liye bhi
+document.querySelectorAll(".dropdown-menu a").forEach(link => {
+  link.addEventListener("click", () => {
+    mainMenu.classList.remove("active");
+  });
+});
 

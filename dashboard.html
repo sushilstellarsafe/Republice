@@ -86,6 +86,7 @@
             border-radius: 50%;
             border: 2px solid #fff;
             object-fit: cover;
+            object-position: center top;
         }
 
         /* Navigation Dropdown */
@@ -219,6 +220,7 @@
             width: 120px;
             height: 120px;
             margin-bottom: 10px;
+            overflow: hidden;
         }
         
         .profile-image {
@@ -227,6 +229,8 @@
             border-radius: 50%;
             border: 3px solid #e0e6ed;
             object-fit: cover;
+            object-position: center top;
+
         }
         
         .upload-icon {
@@ -615,6 +619,214 @@
                 padding: 20px;
             }
         }
+
+
+
+.photo-wrapper {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photo-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;        /* 🔥 FACE NEVER CUT */
+  object-position: center;
+  background: #fff;           /* empty area white */
+}
+
+
+
+.section-divider {
+    margin: 35px 0;
+    border: none;
+    border-top: 1px solid #e0e6ed;
+}
+
+.section-title {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 18px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.info-card {
+    background: #f8f9fb;
+    border: 1px solid #e0e6ed;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #e0e6ed;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-size: 14px;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.info-value {
+    font-size: 15px;
+    color: #111827;
+    font-weight: 600;
+    text-align: right;
+    max-width: 65%;
+}
+
+.info-note {
+    margin-top: 15px;
+    font-size: 13px;
+    color: #6b7280;
+    background: #eef2ff;
+    padding: 10px 12px;
+    border-radius: 6px;
+}
+
+
+.timetable-wrapper {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+.tt-title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.tt-info {
+    border: 1px solid #000;
+    padding: 10px 15px;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.tt-info p {
+    margin: 4px 0;
+}
+
+.timetable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.timetable th,
+.timetable td {
+    border: 1px solid #000;
+    padding: 8px;
+    text-align: center;
+}
+
+.timetable thead {
+    background: #f0f0f0;
+    font-weight: 700;
+}
+
+/* COLORS LIKE IMAGE */
+.tt-coaching {
+    background: #dff0d8;
+    font-weight: 600;
+}
+
+.tt-self {
+    background: #d9edf7;
+    font-weight: 600;
+}
+
+.tt-exam {
+    background: #f2dede;
+    font-weight: 700;
+    color: #a94442;
+}
+
+
+/* 🔥 MOBILE RESPONSIVE TIMETABLE */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+/* MOBILE OPTIMIZATION */
+@media (max-width: 768px) {
+
+    .tt-title {
+        font-size: 17px;
+    }
+
+    .tt-info {
+        font-size: 13px;
+    }
+
+    .timetable {
+        font-size: 12px;
+        min-width: 700px; /* 🔥 forces horizontal scroll */
+    }
+
+    .timetable th,
+    .timetable td {
+        padding: 6px;
+        white-space: nowrap;
+    }
+
+    .tt-coaching,
+    .tt-self,
+    .tt-exam {
+        font-size: 12px;
+    }
+}
+
+/* 📱 EXTRA SMALL DEVICES */
+@media (max-width: 480px) {
+    .tt-info p {
+        font-size: 12px;
+    }
+
+    .timetable {
+        min-width: 650px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
     </style>
 </head>
 <body>
@@ -626,7 +838,8 @@
             <span class="menu-icon" id="menu-toggle">☰</span>
         </div>
         <div class="user-profile" id="profile-link">
-            <img src="https://i.ibb.co/4wFB0Pn8/clientpic.jpg" alt="User" id="headerProfileImg">
+<img id="headerProfileImg" style="display:none;">
+
         </div>
     </header>
 
@@ -647,7 +860,8 @@
 
                 <ul class="dropdown-menu">
                     <li class="dropdown open" id="mba-advance-dropdown">
-                        <a href="#">MBA</a>
+    <a href="#">Diploma in Hospitality Management and Tourism</a>
+
                         <ul class="dropdown-menu">
                             
                             <li><a href="#" class="nav-link" data-page="subjects">Subjects</a></li>
@@ -688,9 +902,10 @@
 
     <div class="profile-image-container">
       <div class="profile-image-wrapper">
-        <img src="https://i.ibb.co/4wFB0Pn8/clientpic.jpg"
-             class="profile-image"
-             id="profilePreview">
+      <img class="profile-image"
+     id="profilePreview"
+     style="display:none;">
+
         <span class="upload-icon" id="profileUploadBtn"></span>
         <input type="file" id="profileImageInput" accept="image/*" hidden>
       </div>
@@ -711,6 +926,44 @@
       <label>Email</label>
       <input type="text" id="email" value="rupender@gmail.com">
     </div>
+
+
+
+
+<hr class="section-divider">
+
+<h2 class="section-title">ACADEMIC DETAILS</h2>
+
+<div class="info-card">
+  <div class="info-row">
+    <span class="info-label">🎓 Diploma</span>
+    <span class="info-value">
+      Diploma in Hospitality Management and Tourism
+    </span>
+  </div>
+
+  <div class="info-row">
+    <span class="info-label">📘 Module</span>
+    <span class="info-value">
+      Front Office Operations
+    </span>
+  </div>
+
+  <div class="info-note">
+    ℹ️ Academic details are assigned by the institution and cannot be edited.
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
 
     <button class="btn-primary" id="saveProfile">Update Profile</button>
   </div>
@@ -757,17 +1010,17 @@
 
         <section class="content-section" id="session">
             <h1>Session Details</h1>
-            <p>Dashboard > Enrolled Classes > MBA Advance > Session</p>
+            <p>Dashboard > Enrolled Classes >Diploma in Hospitality Management and Tourism  > Session</p>
             <div class="content-card">
-                <h3>MBA Advance Session</h3>
+                <h3>Diploma in Hospitality Management and Tourism Session</h3>
                 <p><strong>Start Date:</strong> 03-09-2025</p>
                 <p><strong>End Date:</strong> 09-09-2026</p>
             </div>
         </section>
 
-        <section class="content-section" id="subjects">
+        <!-- <section class="content-section" id="subjects">
             <h1>Subjects</h1>
-            <p>Dashboard > Enrolled Classes > MBA Advance > Subjects</p>
+            <p>Dashboard > Enrolled Classes > Diploma in Hospitality Management and Tourism > Subjects</p>
             <div class="content-card">
                 <h3>List of Subjects</h3>
                 <ul>
@@ -780,46 +1033,148 @@
                     <li>Business Law</li>
                 </ul>
             </div>
-        </section>
+        </section> -->
 
         <section class="content-section" id="timetable">
-            <h1>TIME TABLE - MBA</h1>
-            <p>Dashboard > Enrolled Classes > MBA Advance > Time Table</p>
-            <input type="text" placeholder="Search..." class="search-input">
-            <table>
-                <thead>
-    <tr>
-      <th class="week-col">Week</th>
-      <th class="time-col">9:00 – 15:00</th>
-      <th class="time-col">9:00 – 15:00</th>
-    </tr>
-  </thead>
+<div class="timetable-wrapper">
 
-  <tbody>
-    <tr>
-      <td>Monday</td>
-      <td>Events Management</td>
-      <td>-</td>
-    </tr>
+  <h2 class="tt-title">Front Office Operations</h2>
+
+  <div class="tt-info">
+    <p><strong>Lecturer:</strong> Joshua</p>
+    <p><strong>Mode of Delivery:</strong> Face to Face on Campus</p>
+    <p><strong>Timing:</strong> 8:45AM – 11:45AM</p>
+  </div>
+
+  <div class="table-responsive">
+  <table class="timetable">
+
+    <thead>
+      <tr>
+        <th>S/N</th>
+        <th>Date</th>
+        <th>Day</th>
+        <th>Time</th>
+        <th>CMS/SS</th>
+        <th>Venue</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td>1</td><td>6-Jan</td><td>Tue</td>
+        <td>8:45AM–11:45AM</td><td></td>
+        <td>Classroom 9 – James Madison</td>
+      </tr>
+
+      <tr>
+        <td>2</td><td>7-Jan</td><td>Wed</td>
+        <td>8:45AM–11:45AM</td><td></td>
+        <td>Classroom 9 – James Madison</td>
+      </tr>
+
+
+      <tr>
+        <td>3</td><td>8-Jan</td><td>Thu</td>
+        <td>8:45AM–11:45AM</td><td></td>
+        <td>Classroom 9 – James Madison</td>
+      </tr>
+
+      <tr class="tt-coaching">
+        <td>4</td><td>8-Jan</td><td>Thu</td>
+        <td>1PM–3PM</td>
+        <td>COACHING / MENTORING / SUPPLMENTARY</td>
+        <td>Classroom 9 – James Madison</td>
+      </tr>
+
+
+
+
+
+
+      <tr class="tt-self">
+        <td>5</td><td>9-Jan</td><td>Fri</td>
+        <td>8.45AM–11.45AM</td>
+        <td>SELF STUDY (For Student Only)</td>
+        <td>ZOOM Online Class</td>
+      </tr>
+
+
+            <tr class="tt-self">
+        <td>6</td><td>9-Jan</td><td>Fri</td>
+        <td>1PM–4PM</td>
+        <td>SELF STUDY</td>
+        <td>Classroom 3 – LIBRARY</td>
+      </tr>
+
+
+
+      <tr>
+        <td>7</td><td>12-Jan</td><td>Mon</td>
+        <td>8:45AM–11:45AM</td><td></td>
+        <td>ZOOM Online Class</td>
+      </tr>
+
 
     <tr>
-      <td>Wednesday</td>
-      <td>Services Marketing and Customer Service</td>
-      <td>-</td>
-    </tr>
+        <td>8</td><td>13-Jan</td><td>Tue</td>
+        <td>8:45AM–11:45AM</td><td></td>
+        <td>Classroom 9 – James Madison</td>
+      </tr>
 
-    <tr>
-      <td>Friday</td>
-      <td>Services Marketing and Customer Service</td>
-      <td>Events Management</td>
-    </tr>
-  </tbody>
-            </table>
+         <tr>
+        <td>9</td><td>14-Jan</td><td>Wed</td>
+        <td>8:45AM–11:45AM</td><td></td>
+        <td>Classroom 9 – James Madison</td>
+      </tr>
+
+   <tr>
+        <td>10</td><td>15-Jan</td><td>Thu</td>
+        <td>8:45AM–11:45AM</td><td></td>
+        <td>Classroom 9 – James Madison</td>
+      </tr>
+
+   <tr class="tt-coaching">
+        <td>11</td><td>15-Jan</td><td>Thu</td>
+        <td>1PM–3PM</td>
+        <td>COACHING / MENTORING / SUPPLMENTARY</td>
+        <td>Classroom 9 – James Madison</td>
+      </tr>
+
+        <tr>
+        <td>12</td><td>16-Jan</td><td>Fri</td>
+        <td>8:45AM–11:45AM</td><td></td>
+        <td>ZOOM Online Class</td>
+      </tr>
+   
+
+
+
+
+
+
+
+
+
+
+
+
+      <tr class="tt-exam">
+        <td>Exam</td><td>29-Jan</td><td>Thu</td>
+        <td>10AM–1PM</td>
+        <td>EXAM</td>
+        <td>Classroom 9 – James Madison</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
         </section>
 
         <section class="content-section" id="teacher">
             <h1>Teacher</h1>
-            <p>Dashboard > Enrolled Classes > MBA Advance > Teacher</p>
+            <p>Dashboard > Enrolled Classes > Diploma in Hospitality Management and Tourism > Teacher</p>
             <div class="content-card">
                 <p>Joshua Vigneswaran</p>
             </div>
@@ -827,7 +1182,7 @@
 
         <section class="content-section" id="attendance">
             <h1>Attendance</h1>
-            <p>Dashboard > Enrolled Classes > MBA Advance > Attendance</p>
+            <p>Dashboard > Enrolled Classes > Diploma in Hospitality Management and Tourism> Attendance</p>
             <div class="content-card">
                 <p>Attendance records will be displayed here.</p>
             </div>
